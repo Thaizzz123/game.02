@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đấu Trường Tri Thức</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<body>
+
+    <div id="app">
+        <!-- 1. MÀN HÌNH CHÍNH (HOME) -->
+        <div id="screen-home" class="screen active">
+            <h1 class="text-center">Đấu Trường Tri Thức</h1>
+            <div style="flex-grow: 1; overflow-y: auto; margin-bottom: 20px;">
+                <h3>Hướng dẫn & Luật chơi</h3>
+                <p>- Khởi điểm với 1500 Máu.</p>
+                <p>- Trả lời đúng/sai đều qua phòng. Sai bị trừ máu.</p>
+                <p>- Càng nhanh điểm càng cao (Tối đa 100đ/phòng).</p>
+                <p>- Cứ 10 phòng gặp 1 Boss. Thắng rơi đồ, thua mất 300 máu.</p>
+                
+                <h3>Chọn thân phận của bạn:</h3>
+                <div id="character-selection">
+                    <!-- JS sẽ render các nút chọn nhân vật vào đây -->
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button id="btn-matchmake" disabled>Ghép trận</button>
+                <br><br>
+                <button class="btn-danger" id="btn-goto-admin" style="font-size: 12px; padding: 5px 10px;">[Cài đặt Admin]</button>
+            </div>
+        </div>
+
+        <!-- 2. ADMIN PANEL -->
+        <div id="screen-admin" class="screen">
+            <h2>Quản lý Câu hỏi (Admin)</h2>
+            <p>Dán bộ câu hỏi chuẩn vào đây (Ví dụ: Câu 1: ... \n A. ... \n B. ... \n C. ... \n D. ... \n Đáp án: A)</p>
+            <textarea id="admin-textarea" placeholder="Dán dữ liệu text vào đây..."></textarea>
+            <div id="admin-log" style="margin-top: 10px; margin-bottom: 10px; color: #fbbf24; font-size: 14px; font-weight: bold;">Chưa có dữ liệu.</div>
+            <div>
+                <button id="btn-admin-validate">Kiểm tra Dữ liệu</button>
+                <button id="btn-admin-import" disabled>Lưu vào Game</button>
+                <button class="btn-danger" id="btn-admin-back" style="float: right;">Quay lại</button>
+            </div>
+        </div>
+
+        <!-- 3. GHÉP TRẬN -->
+        <div id="screen-matchmaking" class="screen">
+            <h2 class="text-center" style="margin-top: 50px;">Đang tìm đối thủ...</h2>
+            <div class="text-center" id="matchmaking-status" style="font-size: 20px; margin-top: 20px;">[ Loading... ]</div>
+        </div>
+
+        <!-- 4. SẢNH CHỜ (LOBBY) -->
+        <div id="screen-lobby" class="screen">
+            <h2 class="text-center">Sảnh Chờ</h2>
+            <p class="text-center">Số lượng người chơi: <span id="lobby-count">0</span>/200</p>
+            <ul id="lobby-players-list" style="flex-grow: 1; overflow-y: auto;">
+                <!-- JS render danh sách bot và player -->
+            </ul>
+            <div class="text-center">
+                <button id="btn-lobby-start" style="width: 100%; padding: 15px; font-size: 18px;">Bắt Đầu Trận Đấu</button>
+            </div>
+        </div>
+
+        <!-- 5. TRONG GAME (PLAYING) -->
+        <div id="screen-game" class="screen">
+            <div id="game-top">
+                <div id="ui-hp">❤️ 1500</div>
+                <div id="ui-room">Phòng: 1</div>
+                <div id="ui-timer">⏳ 06:00</div>
+                <div id="ui-score">⭐ 0</div>
+            </div>
+            
+            <!-- Khu vực hiện súng lục nếu nhặt được -->
+            <div style="text-align: left; height: 40px;">
+                <button class="btn-danger hidden" id="btn-skill-pistol">🔫 Dùng Súng Lục</button>
+            </div>
+
+            <div id="game-center">
+                <h2 id="ui-enemy-name" style="color: #fbbf24; margin-bottom: 10px;">Quái Thường</h2>
+                <div id="ui-question-text" style="font-size: 18px; line-height: 1.6;">Đang tải câu hỏi...</div>
+            </div>
+            
+            <div id="game-bottom">
+                <button class="option-btn" id="btn-opt-0">A</button>
+                <button class="option-btn" id="btn-opt-1">B</button>
+                <button class="option-btn" id="btn-opt-2">C</button>
+                <button class="option-btn" id="btn-opt-3">D</button>
+            </div>
+
+            <div id="ui-status-bar" style="margin-top:15px; text-align:center; color: #94a3b8; font-size: 14px; min-height: 20px;">
+                <!-- Thông báo trang bị / buff / debuff -->
+            </div>
+        </div>
+
+        <!-- 6. KẾT QUẢ & XẾP HẠNG (RESULT) -->
+        <div id="screen-result" class="screen">
+            <h2 class="text-center">Bảng Xếp Hạng Tổng Kết</h2>
+            
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <button id="tab-score" style="flex:1;">Theo Điểm Số</button>
+                <button id="tab-room" style="flex:1;">Theo Số Phòng</button>
+            </div>
+
+            <ul id="ranking-list" style="flex-grow: 1; overflow-y: auto; background: #0f172a; padding: 10px; border-radius: 8px;">
+                <!-- JS render bảng xếp hạng -->
+            </ul>
+
+            <div class="text-center" style="margin-top: 20px;">
+                <button id="btn-play-again" style="width: 100%; padding: 15px;">Chơi Lại</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/core/01-state-and-data-definitions.js"></script>
+    <script src="js/core/02-outgame-flow-matchmaking.js"></script>
+    <script src="js/core/03-ingame-loop-hooks.js"></script>
+    <script src="js/equipment/01-gear-skills-endgame-base.js"></script>
+    <script src="js/character/01-visual-image-patch.js"></script>
+    <script src="js/admin/01-admin-security-password.js"></script>
+    <script src="js/multiplayer/01-peerjs-p2p-base.js"></script>
+    <script src="js/character/02-boss-and-character-images-observer.js"></script>
+    <script src="js/character/03-shuffle-and-playername-input.js"></script>
+    <script src="js/character/04-boss-models-playername.js"></script>
+    <script src="js/boss/01-name-persistence-boss-image-fix.js"></script>
+    <script src="js/admin/02-definitive-name-leaderboard-fix.js"></script>
+    <script src="js/core/04-botnames-list.js"></script>
+    <script src="js/core/05-mobile-scroll-fix.js"></script>
+    <script src="js/character/05-scholar-endgame-double-score.js"></script>
+    <script src="js/effects/01-panic-overlay-and-siren-sound.js"></script>
+    <script src="js/boss/02-boss-reward-system-css.js"></script>
+    <script src="js/equipment/02-buff-stacking-fix.js"></script>
+    <script src="js/equipment/03-ocean-heart-durability.js"></script>
+    <script src="js/equipment/04-madman-boss-reward-fix.js"></script>
+    <script src="js/core/06-original-character-anticheat-hook.js"></script>
+    <script src="js/boss/03-boss-reward-gambling-skill.js"></script>
+    <script src="js/character/06-gambler-desc-x5-multiplier.js"></script>
+    <script src="js/character/07-gambler-desc-fix-and-ui.js"></script>
+    <script src="js/multiplayer/02-p2p-anti-desync-cache.js"></script>
+    <script src="js/core/07-hp-floor-lock.js"></script>
+    <script src="js/character/08-vector-art-character-boss-models.js"></script>
+    <script src="js/character/09-guard-2500hp.js"></script>
+    <script src="js/character/10-clan-desc-and-boss-events-pool.js"></script>
+    <script src="js/character/11-scholar-streak-clan-bonus.js"></script>
+    <script src="js/effects/02-firework-celebration.js"></script>
+    <script src="js/character/12-scholar-desc-cleanup.js"></script>
+    <script src="js/character/13-fool-hidden-skill-cleanup.js"></script>
+    <script src="js/effects/03-screen-transitions-and-damage-fx.js"></script>
+    <script src="js/boss/04-monster-name-table-fix.js"></script>
+    <script src="js/leaderboard/01-mini-leaderboard-panel.js"></script>
+    <script src="js/effects/04-toast-immersion-and-sound-engine.js"></script>
+    <script src="js/multiplayer/03-ice-stun-turn-config.js"></script>
+    <script src="js/core/08-question-font-size.js"></script>
+    <script src="js/core/09-render-performance-optimization.js"></script>
+    <script src="js/multiplayer/04-scale-100-players-sync.js"></script>
+    <script src="js/multiplayer/05-toast-modal-and-turn-config.js"></script>
+</body>
+</html>
