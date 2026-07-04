@@ -105,10 +105,20 @@
                 else if (data.type === 'SYNC_STATE') {
                     let idx = p2p.playersData.findIndex(p => p.peerId === conn.peer);
                     if (idx !== -1) {
-                        p2p.playersData[idx].score     = data.score;
-                        p2p.playersData[idx].roomCount  = data.roomCount;
-                        p2p.playersData[idx].hp         = data.hp;
-                        p2p.playersData[idx].isDead     = data.isDead;
+                        // FIX: Một khi Host đã ghi nhận người này CHẾT, không cho bất kỳ gói SYNC_STATE
+                        // nào sau đó ghi đè lại điểm/số phòng nữa (chặn điểm tăng ảo sau khi chết do
+                        // gói tin đến trễ/lệch thứ tự qua mạng P2P, hoặc do các đường endGame() bị đè
+                        // chồng lên nhau chưa dừng kịp việc gửi đồng bộ ở phía client).
+                        if (p2p.playersData[idx].isDead) {
+                            // Chỉ cho phép xác nhận lại là vẫn chết, không cho hồi hoặc tăng điểm ngầm
+                            p2p.playersData[idx].isDead = true;
+                            p2p.playersData[idx].hp = 0;
+                        } else {
+                            p2p.playersData[idx].score     = data.score;
+                            p2p.playersData[idx].roomCount = data.roomCount;
+                            p2p.playersData[idx].hp        = data.hp;
+                            p2p.playersData[idx].isDead    = data.isDead;
+                        }
                         if (data.name && data.name.trim()) p2p.playersData[idx].name = data.name.trim();
                     }
                 }
@@ -185,10 +195,20 @@
                 else if (data.type === 'SYNC_STATE') {
                     let idx = p2p.playersData.findIndex(p => p.peerId === conn.peer);
                     if (idx !== -1) {
-                        p2p.playersData[idx].score     = data.score;
-                        p2p.playersData[idx].roomCount  = data.roomCount;
-                        p2p.playersData[idx].hp         = data.hp;
-                        p2p.playersData[idx].isDead     = data.isDead;
+                        // FIX: Một khi Host đã ghi nhận người này CHẾT, không cho bất kỳ gói SYNC_STATE
+                        // nào sau đó ghi đè lại điểm/số phòng nữa (chặn điểm tăng ảo sau khi chết do
+                        // gói tin đến trễ/lệch thứ tự qua mạng P2P, hoặc do các đường endGame() bị đè
+                        // chồng lên nhau chưa dừng kịp việc gửi đồng bộ ở phía client).
+                        if (p2p.playersData[idx].isDead) {
+                            // Chỉ cho phép xác nhận lại là vẫn chết, không cho hồi hoặc tăng điểm ngầm
+                            p2p.playersData[idx].isDead = true;
+                            p2p.playersData[idx].hp = 0;
+                        } else {
+                            p2p.playersData[idx].score     = data.score;
+                            p2p.playersData[idx].roomCount = data.roomCount;
+                            p2p.playersData[idx].hp        = data.hp;
+                            p2p.playersData[idx].isDead    = data.isDead;
+                        }
                         if (data.name && data.name.trim()) p2p.playersData[idx].name = data.name.trim();
                     }
                 }

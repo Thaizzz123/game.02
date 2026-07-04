@@ -92,7 +92,8 @@ function initRealPlayerState() {
     playerState.isGambleActive = false;
     playerState.gambleCooldown = 0;
     playerState.bossRoomsRemaining = 0;
-    
+    playerState._scholarBonusApplied = false; // Reset cờ chống nhân đôi điểm lặp lại của Học Bá mỗi trận mới
+
     // Reset thời gian
     gameState.timer = 360; // 6 phút (360 giây)
 }

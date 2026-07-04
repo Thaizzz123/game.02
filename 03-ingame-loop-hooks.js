@@ -27,6 +27,33 @@ function startGameLoop() {
 }
 
 // 2. Mô phỏng Bot ảo
+function simulateBots() {
+    if (!gameState.bots || gameState.bots.length === 0) return;
+
+    gameState.bots.forEach(b => {
+        // Bot đã chết rồi thì đóng băng vĩnh viễn — không được tăng thêm điểm/số phòng nữa
+        // (cùng nguyên tắc chống-tăng-điểm-ảo-sau-khi-chết đã áp dụng cho SYNC_STATE của người chơi thật)
+        if ((b.hp || 0) <= 0) {
+            b.hp = 0;
+            return;
+        }
+
+        // Mỗi tick (1.5s), bot có ~55% cơ hội "qua phòng" tiếp theo
+        if (Math.random() < 0.55) {
+            b.roomCount = (b.roomCount || 1) + 1;
+
+            // ~78% xác suất trả lời đúng => cộng điểm, ngược lại mất máu
+            let isCorrect = Math.random() < 0.78;
+            if (isCorrect) {
+                b.score = (b.score || 0) + (80 + Math.floor(Math.random() * 60)); // +80 → +140 điểm
+            } else {
+                let dmg = 60 + Math.floor(Math.random() * 60); // -60 → -120 máu
+                b.hp = Math.max(0, (b.hp || 0) - dmg);
+                if (b.hp <= 0) b.isDead = true;
+            }
+        }
+    });
+}
 
 
 // 3. Khởi tạo Phòng Mới (Quái / Boss / Câu hỏi)

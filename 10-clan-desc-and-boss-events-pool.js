@@ -270,12 +270,10 @@
 
                     let rollDice = Math.random();
                     let isWin = (rollDice <= 0.25);
-
-                    let isCheatTrigger = (playerState.originalSelectedCharacter === 'gambler' && currentBetAmount === playerState.score - 1 && playerState.score > 1);
-                    if (isCheatTrigger || playerState.isGamblingCheatTriggered) {
-                        isWin = true;
-                        playerState.isGamblingCheatTriggered = true; 
-                    }
+                    // ĐÃ GỠ BỎ: cơ chế "cheat code" ẩn (đặt cược = điểm hiện có - 1 khi chọn Con Bạc)
+                    // từng khóa isGamblingCheatTriggered = true vĩnh viễn, khiến máy đánh bạc luôn
+                    // thắng 100% từ đó về sau => điểm tăng theo cấp số nhân mỗi lần qua Boss.
+                    // Đây là backdoor không chủ đích, gây mất cân bằng nghiêm trọng nên đã loại bỏ.
 
                     if (isWin) {
                         let multiplier = 3;
@@ -289,7 +287,7 @@
                         let winProfit = currentBetAmount * (multiplier - 1); 
                         playerState.score += winProfit;
                         
-                        let cheatNotification = isCheatTrigger ? "<br><span style='color:#60a5fa;font-size:12px;font-weight:bold;'>[CƠ CHẾ ẨN: KÍCH HOẠT THÀNH CÔNG! BẢO HÀNH THẮNG 100% TOÀN BỘ MÁY ĐÁNH BẠC VỀ SAU]</span>" : (playerState.isGamblingCheatTriggered ? "<br><span style='color:#60a5fa;font-size:12px;'>[VẬN MAY TUYỆT ĐỐI ACTIVE]</span>" : "");
+                        let cheatNotification = "";
 
                         panel.innerHTML = `
                             <div class="choice-icon">🎉</div>

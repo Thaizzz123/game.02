@@ -48,9 +48,13 @@
             allEntities.sort((a, b) => b.score - a.score);
 
             // Kích hoạt nội tại Học Bá mới (Nhân đôi điểm nếu nằm trong Top 10)
-            if (playerState.character === 'scholar') {
+            // FIX: thêm cờ playerState._scholarBonusApplied để đảm bảo x2 CHỈ được áp dụng
+            // đúng 1 lần / trận, phòng trường hợp endGame() vô tình chạy lại lần nữa qua các
+            // lớp ghi đè chồng chéo (panic/hp-floor/fool-revive) rồi làm điểm nhân đôi liên tiếp.
+            if (playerState.character === 'scholar' && !playerState._scholarBonusApplied) {
                 let pi = allEntities.findIndex(e => e.isPlayer);
                 if (pi >= 0 && pi < 10) {
+                    playerState._scholarBonusApplied = true;
                     playerState.score *= 2;
                     allEntities[pi].score = playerState.score;
                     alert(`📖 Nội tại HỌC BÁ kích hoạt: Bạn kết thúc trận đấu ở vị trí thứ ${pi + 1} (Thuộc Top 10). Toàn bộ điểm số được NHÂN ĐÔI (x2)!`);
@@ -80,7 +84,9 @@
                 let playerIndex = rankingState.findIndex(e => e.peerId === myPeerId);
                 
                 // Kiểm tra điều kiện lọt Top 10 trên mạng mạng lưới toàn cục
-                if (playerState.character === 'scholar' && playerIndex >= 0 && playerIndex < 10) {
+                // FIX: cùng cờ chống-chạy-lại như nhánh offline ở trên
+                if (playerState.character === 'scholar' && !playerState._scholarBonusApplied && playerIndex >= 0 && playerIndex < 10) {
+                    playerState._scholarBonusApplied = true;
                     playerState.score *= 2;
                     rankingState[playerIndex].score = playerState.score;
                     alert(`📖 Nội tại HỌC BÁ kích hoạt: Bạn đã lọt vào Top 10 của giải đấu! Toàn bộ điểm số được NHÂN ĐÔI (x2)!`);
