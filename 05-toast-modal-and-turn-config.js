@@ -148,8 +148,8 @@
         var myName = getValidPlayerName();
 
         window._dttt_prompt(
-            '🎮 Nhập Mã Phòng<br><span style="color:#94a3b8;font-size:12px;">Ví dụ: DTTT-1234</span>',
-            'DTTT-0000',
+            '🎮 Nhập Mã Phòng<br><span style="color:#94a3b8;font-size:12px;">Ví dụ: 123456</span>',
+            '000000',
             function (roomCode) {
                 if (!roomCode) return;
                 roomCode = roomCode.toUpperCase();

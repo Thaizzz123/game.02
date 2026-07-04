@@ -35,8 +35,8 @@
         changeScreen('screen-matchmaking');
         document.getElementById('matchmaking-status').innerText = 'Đang khởi tạo máy chủ phòng...';
 
-        const randomCode = Math.floor(1500 + Math.random() * 8499).toString();
-        p2p.roomId  = 'DTTT-' + randomCode;
+        const randomCode = Math.floor(100000 + Math.random() * 900000).toString();
+        p2p.roomId  = randomCode;
         p2p.isHost  = true;
         
         // Khởi tạo Peer với cấu hình băng thông xuyên NAT nâng cao
@@ -138,8 +138,8 @@
         changeScreen('screen-matchmaking');
         document.getElementById('matchmaking-status').innerText = 'Đang thiết lập Máy Chủ Trung Tâm...';
 
-        const randomCode = Math.floor(1500 + Math.random() * 8499).toString();
-        p2p.roomId  = 'DTTT-' + randomCode;
+        const randomCode = Math.floor(100000 + Math.random() * 900000).toString();
+        p2p.roomId  = randomCode;
         p2p.isHost  = true;
         p2p.peer    = new Peer(p2p.roomId, robustPeerConfig);
 
