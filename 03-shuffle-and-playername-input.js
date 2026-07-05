@@ -16,7 +16,13 @@ if (charSelectionContainer && !document.getElementById('player-display-name')) {
 window.renderCharacterSelectionUI = function() {
     const container = document.getElementById('character-selection');
     container.innerHTML = '';
-    Object.values(characterDefs).forEach(char => {
+    // Luôn đưa "Random" xuống hàng cuối cùng, bất kể sau này thêm bao nhiêu nhân vật mới
+    const orderedChars = Object.values(characterDefs).sort((a, b) => {
+        if (a.id === 'random') return 1;
+        if (b.id === 'random') return -1;
+        return 0;
+    });
+    orderedChars.forEach(char => {
         let btn = document.createElement('button');
         btn.classList.add('clearfix');
         btn.style.width = '100%';
