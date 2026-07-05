@@ -15,10 +15,10 @@
         id: 'doraemon',
         name: 'Doraemon',
         baseHp: 1500,
-        desc: 'Kỹ năng, Du Hành Thời Gian. Đúng 6 câu liên tục để đặt 1 Mốc Thời Gian. ' +
-              'Đúng thêm 3 câu liên tục sẽ dời Mốc tới hiện tại; ' +
-              'sai liên tục 3 câu sẽ mất Mốc. Đúng/sai đan xen ' +
-              'không đủ 3 liên tục thì Mốc vẫn giữ nguyên. Có thể chủ động dùng kỹ năng để quay ngược ' +
+        desc: 'Nội tại: Đúng liên tiếp 6 câu để đặt 1 Mốc Thời Gian. ' +
+              'Đúng thêm 3 câu liên tục sẽ đặt lại mốc ' +
+              'sai liên tục 3 câu sẽ mất Mốc. ' +
+              'Có thể chủ động dùng kỹ năng để quay ngược ' +
               'về đúng Mốc đã lưu bất cứ lúc nào.'
     };
     characterDefs.doraemon.img = 'https://api.dicebear.com/7.x/bottts/svg?seed=Dora&backgroundColor=3b82f6';
