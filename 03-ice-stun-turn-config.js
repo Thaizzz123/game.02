@@ -25,6 +25,13 @@
         debug: 1 // Chỉ ghi nhận lỗi nghiêm trọng để tối ưu hóa hiệu năng
     };
 
+    // ─── HÀM SINH MÃ PHÒNG DÙNG CHUNG (6 số ngẫu nhiên, KHÔNG tiền tố) ───
+    // Dùng chung cho cả hostCreateRoom và hostCreateRoomAsObserver để đảm bảo
+    // luôn đồng bộ 1 định dạng duy nhất, tránh lệch logic giữa 2 nơi khi sửa sau này.
+    function generateRoomCode() {
+        return Math.floor(100000 + Math.random() * 900000).toString();
+    }
+
     // ─── 2. VÁ LỖI 1: CHỦ PHÒNG (HOST) KHÔNG HIỆN MÃ PHÒNG HOẶC BỊ TREO MÀN HÌNH ───
     window.hostCreateRoom = function () {
         if (!playerState.character) { alert('Vui lòng chọn nhân vật trước!'); return; }
@@ -35,8 +42,7 @@
         changeScreen('screen-matchmaking');
         document.getElementById('matchmaking-status').innerText = 'Đang khởi tạo máy chủ phòng...';
 
-        const randomCode = Math.floor(100000 + Math.random() * 900000).toString();
-        p2p.roomId  = randomCode;
+        p2p.roomId  = generateRoomCode();
         p2p.isHost  = true;
         
         // Khởi tạo Peer với cấu hình băng thông xuyên NAT nâng cao
@@ -138,8 +144,7 @@
         changeScreen('screen-matchmaking');
         document.getElementById('matchmaking-status').innerText = 'Đang thiết lập Máy Chủ Trung Tâm...';
 
-        const randomCode = Math.floor(100000 + Math.random() * 900000).toString();
-        p2p.roomId  = randomCode;
+        p2p.roomId  = generateRoomCode();
         p2p.isHost  = true;
         p2p.peer    = new Peer(p2p.roomId, robustPeerConfig);
 
