@@ -1,7 +1,7 @@
 // ─── ADMIN SECURITY PATCH ───
 
-// Mật khẩu cứng để vào Admin Panel (Mày có thể tự đổi số '0000' này)
-const ADMIN_PASSWORD = '0000';
+// Mật khẩu ADMIN_PASSWORD giờ nằm riêng ở file 00-admin-config.js
+// (load trước file này trong index.html), sửa mật khẩu thì mở file đó.
 
 // Ghi đè lại sự kiện click của nút vào Admin đã viết ở Phần 2
 const btnGotoAdmin = document.getElementById('btn-goto-admin');
